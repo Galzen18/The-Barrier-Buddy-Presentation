@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build Your Fence — Online Configurator | Barrier Buddy</title>
+<meta name="description" content="Design your Barrier Buddy aluminum privacy fence online: choose post height, post distance, panel size, colour, texture, finish and gate options with frosted glass, then get a free quote.">
+<meta name="theme-color" content="#c80000">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Barrier Buddy">
+<meta property="og:title" content="Build Your Fence — Online Configurator | Barrier Buddy">
+<meta property="og:description" content="Design your Barrier Buddy aluminum privacy fence online: choose post height, post distance, panel size, colour, texture, finish and gate options with frosted glass, then get a free quote.">
+<meta property="og:image" content="assets/img/standard-configuration.jpg">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:ital,wght@0,500;0,600;0,700;0,800;0,900;1,900&amp;family=Lato:wght@300;400;700;900&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a class="brand" href="index.html" aria-label="Barrier Buddy by AluFacade — home">
+      <span class="brand__name wordmark">Barrier Buddy</span>
+      <span class="brand__by">by AluFacade</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span></span><span class="sr-only">Menu</span></button>
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul class="nav__list">
+          <li><a class="nav__link" href="index.html">Home</a></li>
+          <li><a class="nav__link" href="products.html">Products</a></li>
+          <li><a class="nav__link nav__link--build" href="configurator.html" aria-current="page">Build Your Fence <span class="tag">New</span></a></li>
+          <li><a class="nav__link" href="gallery.html">Portfolio</a></li>
+          <li><a class="nav__link" href="about.html">About</a></li>
+          <li><a class="nav__link" href="contact.html">Contact</a></li>
+      </ul>
+      <a class="btn btn--primary nav__cta" href="contact.html#quote">Get a Free Quote</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="cfg-page">
+  <section class="cfg-intro">
+    <div class="container cfg-intro__inner">
+      <div>
+        <p class="breadcrumb"><a href="index.html">Home</a> / Build Your Fence</p>
+        <h1 class="wordmark">Build your fence</h1>
+        <p>Design your Barrier Buddy live, to scale. When you're happy, send it to us for a free quote.</p>
+      </div>
+      <a class="btn btn--light btn--lg" href="#cfg-summary" data-quote-jump>Get a Free Quote <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+  </section>
+
+  <div class="container cfg">
+    <!-- PREVIEW -->
+    <div class="cfg__stage">
+      <div class="cfg__preview" id="cfg-preview" aria-live="polite"></div>
+      <div class="cfg__readout" id="cfg-readout"></div>
+    </div>
+
+    <!-- CONTROLS -->
+    <form class="cfg__controls" id="cfg-form" onsubmit="return false" aria-label="Fence options">
+
+      <fieldset class="cfg-step" id="size">
+        <legend><span class="cfg-step__n">1</span> Size &amp; layout</legend>
+
+        <div class="cfg-field">
+          <div class="cfg-field__head"><label for="height">Post height</label><output id="height-out" for="height"></output></div>
+          <input type="range" id="height" name="height" min="3" max="8" step="0.5" value="6">
+          <div class="cfg-scale"><span>3&prime;</span><span>Standard 6&prime;</span><span>8&prime;</span></div>
+        </div>
+
+        <div class="cfg-field">
+          <div class="cfg-field__head"><label for="spacing">Post distance (centre to centre)</label><output id="spacing-out" for="spacing"></output></div>
+          <input type="range" id="spacing" name="spacing" min="3" max="24" step="0.5" value="6">
+          <div class="cfg-scale"><span>3&prime;</span><span>Standard 6&prime;</span><span>24&prime;</span></div>
+          <p class="cfg-note" id="spacing-note" hidden>Spans over 8&prime; are reviewed by our engineers for structural integrity &mdash; single segments up to 24&prime; are possible.</p>
+        </div>
+
+        <div class="cfg-field">
+          <div class="cfg-field__head"><label for="bays">Number of fence sections</label><output id="bays-out" for="bays"></output></div>
+          <input type="range" id="bays" name="bays" min="1" max="30" step="1" value="3">
+          <div class="cfg-length">
+            <label for="runlength">Or enter your total fence length</label>
+            <div class="cfg-length__row"><input type="number" id="runlength" min="3" max="1000" step="1" inputmode="numeric" placeholder="e.g. 48"><span>ft</span><button type="button" class="btn btn--dark" id="runlength-apply">Calculate</button></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="cfg-step" id="panel">
+        <legend><span class="cfg-step__n">2</span> Panel size</legend>
+        <p class="cfg-help">Choose how many horizontal courses make up each panel. Fewer courses = taller boards.</p>
+        <div class="cfg-cards" id="courses-options"></div>
+      </fieldset>
+
+      <fieldset class="cfg-step" id="colour">
+        <legend><span class="cfg-step__n">3</span> Colour</legend>
+        <div class="tabs" role="tablist" aria-label="Colour type">
+          <button type="button" class="tab" role="tab" data-colour-type="solid" aria-selected="true">Solid colour</button>
+          <button type="button" class="tab" role="tab" data-colour-type="wood" aria-selected="false">Woodgrain on aluminum</button>
+        </div>
+        <div class="cfg-swatches" id="colour-options" role="radiogroup" aria-label="Colour"></div>
+        <label class="checkbox" style="margin-top:14px"><input type="checkbox" id="custom-colour"> I'd like a custom colour match (RAL, Pantone or a reference sample)</label>
+        <input type="text" id="custom-colour-text" class="cfg-input" placeholder="e.g. RAL 7016 Anthracite, or 'match my window frames'" hidden>
+      </fieldset>
+
+      <fieldset class="cfg-step" id="texture-step">
+        <legend><span class="cfg-step__n">4</span> Texture</legend>
+        <div class="cfg-pills" id="texture-options" role="radiogroup" aria-label="Texture"></div>
+        <p class="cfg-note" id="texture-note" hidden>Woodgrain finishes have their own grain texture.</p>
+      </fieldset>
+
+      <fieldset class="cfg-step" id="finish-step">
+        <legend><span class="cfg-step__n">5</span> Finish</legend>
+        <div class="cfg-pills" id="finish-options" role="radiogroup" aria-label="Finish"></div>
+        <div class="cfg-field" style="margin-top:18px">
+          <div class="cfg-field__head"><span class="cfg-label">Post colour</span></div>
+          <div class="cfg-pills" id="post-options" role="radiogroup" aria-label="Post colour"></div>
+        </div>
+      </fieldset>
+
+      <fieldset class="cfg-step" id="gate">
+        <legend><span class="cfg-step__n">6</span> Gate</legend>
+        <div class="cfg-cards cfg-cards--3" id="gate-options"></div>
+        <div id="gate-extra">
+          <div class="cfg-field">
+            <div class="cfg-field__head"><label for="gateWidth">Gate width</label><output id="gateWidth-out" for="gateWidth"></output></div>
+            <input type="range" id="gateWidth" name="gateWidth" min="3" max="6" step="0.5" value="4">
+            <div class="cfg-scale"><span>3&prime;</span><span>Standard 4&prime;</span><span>6&prime;</span></div>
+          </div>
+          <div class="cfg-field">
+            <div class="cfg-field__head"><span class="cfg-label">Gate position</span></div>
+            <div class="cfg-pills" id="gatepos-options" role="radiogroup" aria-label="Gate position"></div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="cfg-step" id="install">
+        <legend><span class="cfg-step__n">7</span> Installation surface</legend>
+        <div class="cfg-pills" id="mount-options" role="radiogroup" aria-label="Installation surface"></div>
+      </fieldset>
+
+      <!-- SUMMARY -->
+      <section class="cfg-summary" id="cfg-summary" aria-labelledby="sum-title">
+        <h2 id="sum-title">Your Barrier Buddy</h2>
+        <dl class="cfg-summary__list" id="cfg-summary-list"></dl>
+        <div class="cfg-summary__actions">
+          <button type="button" class="btn btn--primary btn--lg btn--block" id="cfg-quote">Get a Free Quote for this design <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          <div class="cfg-summary__secondary">
+            <button type="button" class="btn btn--outline" id="cfg-share">Copy share link</button>
+            <button type="button" class="btn btn--outline" id="cfg-reset">Reset to standard</button>
+          </div>
+          <p class="small muted" id="cfg-share-status" role="status"></p>
+        </div>
+        <p class="small muted">Preview is schematic and for design purposes. Final dimensions, spans and finishes are confirmed by our team with your quote.</p>
+      </section>
+    </form>
+  </div>
+</main>
+
+<div class="quote-bar" aria-label="Quick actions">
+  <a class="btn btn--dark" href="configurator.html">Build Your Fence</a>
+  <a class="btn btn--primary" href="contact.html#quote">Free Quote</a>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="index.html"><span class="brand__name wordmark">Barrier Buddy</span><span class="brand__by">by AluFacade</span></a>
+        <p>Canadian-made aluminum privacy fences and gates for homes, developments and commercial projects. Built for privacy.</p>
+        <a class="btn btn--primary" href="contact.html#quote">Get a Free Quote</a>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="configurator.html">Build Your Fence</a></li>
+          <li><a href="gallery.html">Portfolio</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Products</h4>
+        <ul>
+          <li><a href="products.html#fence">The Barrier Buddy</a></li>
+          <li><a href="products.html#gate">The Barrier Buddy Gate</a></li>
+          <li><a href="products.html#finishes">Colours &amp; Textures</a></li>
+          <li><a href="products.html#specs">Technical Specs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Visit us</h4>
+        <address><strong>Head Office &amp; Factory</strong>2931 Rue du Meunier, Suite 2<br>Vaudreuil-Dorion, QC J7V 8P2</address>
+        <address><strong>Ontario Showroom</strong>7250 Keele St<br>Concord, ON L4K 1Z8</address>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span data-year>2026</span> Barrier Buddy, a subsidiary of AluFacade. All rights reserved.</span>
+      <span>All Barrier Buddy products are AAMA 2603 / 2604 / 2605 certified &middot; 25-year warranty</span>
+    </div>
+  </div>
+</footer>
+<script src="assets/js/fence-render.js"></script>
+<script src="assets/js/configurator.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

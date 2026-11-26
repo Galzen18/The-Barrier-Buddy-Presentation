@@ -31,14 +31,11 @@
       { id: "ebony", name: "Ebony", hex: "#50433a" }
     ],
     texture: [
-      { id: "smooth-satin", name: "Smooth satin", hex: "#33383a" },
       { id: "fine-sand", name: "Fine sand", hex: "#363a3a" },
-      { id: "coarse-sand", name: "Coarse sand", hex: "#89785e" },
       { id: "hammered", name: "Hammered", hex: "#484a4b" },
       { id: "silver-metallic", name: "Silver metallic", hex: "#a2a9ab" },
       { id: "bronze-metallic", name: "Bronze metallic", hex: "#66513d" },
-      { id: "high-gloss", name: "High gloss", hex: "#292d33" },
-      { id: "soft-matte", name: "Soft matte", hex: "#737c64" }
+      { id: "high-gloss", name: "High gloss", hex: "#292d33" }
     ]
   };
 
@@ -181,9 +178,9 @@
     // texture noise
     var tex = cfg.texture;
     if (!isWood && tex !== "smooth") {
-      var freq = tex === "fine-sand" ? 0.9 : tex === "coarse-sand" ? 0.45 : 0.12;
+      var freq = tex === "fine-sand" ? 0.9 : 0.12;
       var oct = tex === "hammered" ? 2 : 1;
-      var alpha = tex === "fine-sand" ? 0.35 : tex === "coarse-sand" ? 0.55 : 0.6;
+      var alpha = tex === "fine-sand" ? 0.35 : 0.6;
       out.push('<filter id="' + id + 'tex" x="0" y="0" width="100%" height="100%"><feTurbulence type="' + (tex === "hammered" ? "turbulence" : "fractalNoise") + '" baseFrequency="' + freq + '" numOctaves="' + oct + '" seed="7" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 ' + alpha + ' -' + (alpha / 2).toFixed(2) + '"/></filter>');
     }
     // finish sheen

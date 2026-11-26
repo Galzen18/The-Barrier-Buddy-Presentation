@@ -31,7 +31,7 @@
           <li><a class="nav__link" href="index.html">Home</a></li>
           <li><a class="nav__link" href="products.html">Products</a></li>
           <li><a class="nav__link nav__link--build" href="configurator.html" aria-current="page">Build Your Fence <span class="tag">New</span></a></li>
-          <li><a class="nav__link" href="gallery.html">Portfolio</a></li>
+          <li><a class="nav__link" href="gallery.html">Gallery</a></li>
           <li><a class="nav__link" href="about.html">About</a></li>
           <li><a class="nav__link" href="contact.html">Contact</a></li>
       </ul>
@@ -66,16 +66,22 @@
         <legend><span class="cfg-step__n">1</span> Size &amp; layout</legend>
 
         <div class="cfg-field">
+          <div class="cfg-field__head"><span class="cfg-label">Panel spacing</span><output id="privacy-out"></output></div>
+          <div class="cfg-pills" id="gap-options" role="radiogroup" aria-label="Panel spacing"></div>
+          <p class="cfg-help cfg-gap-help" id="gap-help"></p>
+        </div>
+
+        <div class="cfg-field">
           <div class="cfg-field__head"><label for="height">Post height</label><output id="height-out" for="height"></output></div>
-          <input type="range" id="height" name="height" min="3" max="8" step="0.5" value="6">
-          <div class="cfg-scale"><span>3&prime;</span><span>Standard 6&prime;</span><span>8&prime;</span></div>
+          <input type="range" id="height" name="height" min="3" max="6" step="0.5" value="6">
+          <div class="cfg-scale"><span>3&prime;</span><span>Standard 6&prime;</span><span id="height-max">6&prime;</span></div>
         </div>
 
         <div class="cfg-field">
           <div class="cfg-field__head"><label for="spacing">Post distance (centre to centre)</label><output id="spacing-out" for="spacing"></output></div>
-          <input type="range" id="spacing" name="spacing" min="3" max="24" step="0.5" value="6">
-          <div class="cfg-scale"><span>3&prime;</span><span>Standard 6&prime;</span><span>24&prime;</span></div>
-          <p class="cfg-note" id="spacing-note" hidden>Spans over 8&prime; are reviewed by our engineers for structural integrity &mdash; single segments up to 24&prime; are possible.</p>
+          <input type="range" id="spacing" name="spacing" min="3" max="6" step="0.5" value="6">
+          <div class="cfg-scale"><span>3&prime;</span><span>Standard 6&prime;</span><span id="spacing-max">6&prime;</span></div>
+          <p class="cfg-note" id="spacing-note" hidden>Panels that touch are limited to 6&prime; high &times; 6&prime; post spacing. Need it taller or longer? Choose 0.5&Prime;&ndash;1&Prime; separators above for up to 8&prime; high and 24&prime; between posts.</p>
         </div>
 
         <div class="cfg-field">
@@ -177,7 +183,8 @@
         <ul>
           <li><a href="products.html">Products</a></li>
           <li><a href="configurator.html">Build Your Fence</a></li>
-          <li><a href="gallery.html">Portfolio</a></li>
+          <li><a href="why.html">Why Barrier Buddy</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
           <li><a href="about.html">About Us</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
@@ -192,14 +199,15 @@
         </ul>
       </div>
       <div class="footer-col">
-        <h4>Visit us</h4>
+        <h4>Contact</h4>
+        <p style="margin:0 0 14px"><a class="footer-email" href="mailto:info@barrierbuddy.ca">info@barrierbuddy.ca</a></p>
         <address><strong>Head Office &amp; Factory</strong>2931 Rue du Meunier, Suite 2<br>Vaudreuil-Dorion, QC J7V 8P2</address>
         <address><strong>Ontario Showroom</strong>7250 Keele St<br>Concord, ON L4K 1Z8</address>
       </div>
     </div>
     <div class="footer-bottom">
       <span>&copy; <span data-year>2026</span> Barrier Buddy, a subsidiary of AluFacade. All rights reserved.</span>
-      <span>All Barrier Buddy products are AAMA 2603 / 2604 / 2605 certified &middot; 25-year warranty</span>
+      <span>All Barrier Buddy products are AAMA 2603 / 2604 / 2605 certified &middot; 25-year warranty on powder coat</span>
     </div>
   </div>
 </footer>

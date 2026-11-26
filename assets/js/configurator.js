@@ -36,8 +36,8 @@
   var COURSE_LABELS = { 21: "Standard", 6: "Narrow boards", 5: "Classic", 4: "Balanced", 3: "Wide boards", 2: "Bold" };
 
   /* ---------- URL state ---------- */
-  var KEYS = ["height", "spacing", "bays", "courses", "colourType", "colour", "texture", "finish", "postColour", "gate", "gateWidth", "gatePosition", "mount", "customColour"];
-  var NUMERIC = { height: 1, spacing: 1, bays: 1, courses: 1, gateWidth: 1 };
+  var KEYS = ["gap", "height", "spacing", "bays", "courses", "colourType", "colour", "texture", "finish", "postColour", "gate", "gateWidth", "gatePosition", "mount", "customColour"];
+  var NUMERIC = { gap: 1, height: 1, spacing: 1, bays: 1, courses: 1, gateWidth: 1 };
 
   function readHash() {
     var h = window.location.hash.replace(/^#/, "");
@@ -63,8 +63,13 @@
   }
   function clamp(v, a, b) { return Math.min(b, Math.max(a, v)); }
   function sanitize() {
-    state.height = clamp(+state.height || 6, 3, 8);
-    state.spacing = clamp(+state.spacing || 6, 3, 24);
+    if (!F.SEPARATORS.some(function (o) { return o.id === +state.gap; })) state.gap = 0;
+    state.gap = +state.gap;
+    var lim = F.limitsFor(state.gap);
+    state.height = clamp(+state.height || 6, 3, lim.height);
+    state.spacing = clamp(+state.spacing || 6, 3, lim.spacing);
+    if (!F.TEXTURES.some(function (o) { return o.id === state.texture; })) state.texture = "smooth";
+    if (!F.FINISHES.some(function (o) { return o.id === state.finish; })) state.finish = "matte";
     state.bays = clamp(Math.round(+state.bays || 3), 1, 30);
     if (F.COURSE_OPTIONS.indexOf(+state.courses) === -1) state.courses = 21;
     if (!F.COLOURS[state.colourType] || state.colourType === "texture") state.colourType = "solid";
@@ -79,7 +84,7 @@
     }).join("");
     container.addEventListener("change", function (e) {
       if (e.target.name !== key) return;
-      state[key] = e.target.value;
+      state[key] = NUMERIC[key] ? parseFloat(e.target.value) : e.target.value;
       (onChange || update)();
     });
   }
@@ -120,12 +125,22 @@
   }
 
   function syncControls() {
+    var lim = F.limitsFor(state.gap);
+    $("height").max = lim.height;
+    $("spacing").max = lim.spacing;
+    $("height-max").textContent = lim.height + "\u2032";
+    $("spacing-max").textContent = lim.spacing + "\u2032";
     ["height", "spacing", "bays", "gateWidth"].forEach(function (k) { $(k).value = state[k]; });
+    check("gap", state.gap);
+    $("privacy-out").textContent = privacy() + "% privacy";
+    $("gap-help").textContent = state.gap > 0
+      ? "Small aluminum separators in the posts leave a " + state.gap + "\u2033 gap between panels, so wind passes through instead of pushing on a solid \u201csail\u201d. That lets us build up to 8\u2032 high with posts up to 24\u2032 apart, at about 90% privacy."
+      : "Standard panels touch for 100% privacy. For structural reasons, touching panels are limited to 6\u2032 high \u00d7 6\u2032 between posts.";
     $("height-out").textContent = F.ftIn(state.height * 12);
     $("spacing-out").textContent = F.ftIn(state.spacing * 12);
     $("bays-out").textContent = state.bays;
     $("gateWidth-out").textContent = F.ftIn(state.gateWidth * 12);
-    $("spacing-note").hidden = state.spacing <= 8;
+    $("spacing-note").hidden = state.gap > 0;
 
     document.querySelectorAll("[data-colour-type]").forEach(function (b) { b.setAttribute("aria-selected", String(b.dataset.colourType === state.colourType)); });
     buildColours();
@@ -148,6 +163,11 @@
     if (state.customColour && state.customColour !== "yes") $("custom-colour-text").value = state.customColour;
   }
 
+  function privacy() {
+    for (var i = 0; i < F.SEPARATORS.length; i++) if (F.SEPARATORS[i].id === state.gap) return F.SEPARATORS[i].privacy;
+    return 100;
+  }
+
   /* ---------- Derived numbers ---------- */
   function totals() {
     var gate = state.gate !== "none";
@@ -158,7 +178,7 @@
       panels: state.bays * state.courses,
       lengthFt: lengthIn / 12,
       lengthIn: lengthIn,
-      profileIn: (state.height * 12 - 3.2) / state.courses
+      profileIn: (state.height * 12 - 3.2 - state.gap * (state.courses - 1)) / state.courses
     };
   }
 
@@ -170,7 +190,8 @@
     var rows = [
       ["Overall length", F.ftIn(t.lengthIn) + " (" + Math.round(t.lengthIn * 25.4).toLocaleString() + " mm)"],
       ["Post height", F.ftIn(state.height * 12) + " (" + Math.round(state.height * 304.8).toLocaleString() + " mm)"],
-      ["Post distance", F.ftIn(state.spacing * 12) + " centres" + (state.spacing > 8 ? " — engineering review" : "")],
+      ["Post distance", F.ftIn(state.spacing * 12) + " centres"],
+      ["Panel spacing", state.gap > 0 ? state.gap + "″ aluminum separators (≈" + privacy() + "% privacy)" : "Panels touching (100% privacy)"],
       ["Fence sections", String(state.bays)],
       ["Panel size", state.courses + " courses (≈ " + t.profileIn.toFixed(1) + "″ boards)"],
       ["Colour", colour + (state.customColour ? " — custom match requested" + (state.customColour !== "yes" ? ": " + state.customColour : "") : "")],
@@ -199,6 +220,7 @@
       "<div><span>Height</span><strong>" + F.ftIn(state.height * 12) + "</strong></div>" +
       "<div><span>Posts</span><strong>" + t.posts + "</strong></div>" +
       "<div><span>Panels</span><strong>" + t.panels + "</strong></div>" +
+      "<div><span>Privacy</span><strong>" + privacy() + "%</strong></div>" +
       "<div><span>Gate</span><strong>" + (state.gate === "none" ? "—" : state.gate === "frosted" ? "Glass" : "Alu") + "</strong></div>";
     $("cfg-summary-list").innerHTML = summaryRows().map(function (r) { return "<div><dt>" + r[0] + "</dt><dd>" + r[1] + "</dd></div>"; }).join("");
     if (skipFirstHashWrite) skipFirstHashWrite = false;
@@ -210,6 +232,7 @@
   var skipFirstHashWrite = !!window.location.hash && window.location.hash.indexOf("=") === -1;
   readHash();
   buildCourses();
+  pills($("gap-options"), F.SEPARATORS.map(function (o) { return { id: o.id, name: o.short === "None" ? "Touching (none)" : o.short + " separators" }; }), "gap");
   pills($("texture-options"), F.TEXTURES, "texture");
   pills($("finish-options"), F.FINISHES, "finish");
   pills($("post-options"), POST_OPTIONS, "postColour");

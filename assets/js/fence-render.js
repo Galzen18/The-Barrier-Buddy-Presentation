@@ -45,19 +45,35 @@
   var TEXTURES = [
     { id: "smooth", name: "Smooth" },
     { id: "fine-sand", name: "Fine sand" },
-    { id: "coarse-sand", name: "Coarse sand" },
     { id: "hammered", name: "Hammered" }
   ];
 
   var FINISHES = [
     { id: "matte", name: "Matte" },
-    { id: "soft-matte", name: "Soft matte" },
-    { id: "satin", name: "Satin" },
     { id: "high-gloss", name: "High gloss" },
     { id: "metallic", name: "Metallic" }
   ];
 
   var COURSE_OPTIONS = [21, 6, 5, 4, 3, 2];
+
+  /*
+   * Panel separators. Standard panels touch (100% privacy) and are limited to
+   * 6 ft x 6 ft for structural reasons. Small aluminum separators in the posts
+   * open a 0.5"-1" gap between panels so wind passes through: the fence no
+   * longer acts as a sail, allowing up to 24 ft post spacing and 8 ft height
+   * at about 90% privacy.
+   */
+  var SEPARATORS = [
+    { id: 0, name: "None — panels touching", short: "None", privacy: 100 },
+    { id: 0.5, name: "0.5″ separators", short: "0.5″", privacy: 90 },
+    { id: 0.75, name: "0.75″ separators", short: "0.75″", privacy: 90 },
+    { id: 1, name: "1″ separators", short: "1″", privacy: 90 }
+  ];
+  var LIMITS = {
+    touching: { height: 6, spacing: 6 },
+    separated: { height: 8, spacing: 24 }
+  };
+  function limitsFor(gap) { return +gap > 0 ? LIMITS.separated : LIMITS.touching; }
 
   var DEFAULTS = {
     height: 6, // post height, ft
@@ -72,6 +88,7 @@
     gate: "none",
     gateWidth: 4,
     gatePosition: "left",
+    gap: 0, // inches between panels (0 = touching)
     gateInfillColour: "match",
     mount: "surface"
   };
@@ -170,7 +187,7 @@
       out.push('<filter id="' + id + 'tex" x="0" y="0" width="100%" height="100%"><feTurbulence type="' + (tex === "hammered" ? "turbulence" : "fractalNoise") + '" baseFrequency="' + freq + '" numOctaves="' + oct + '" seed="7" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 ' + alpha + ' -' + (alpha / 2).toFixed(2) + '"/></filter>');
     }
     // finish sheen
-    var sheen = { matte: [0.02, 0.0], "soft-matte": [0.06, 0.0], satin: [0.14, 0.04], "high-gloss": [0.32, 0.1], metallic: [0.26, 0.16] }[cfg.finish] || [0.04, 0];
+    var sheen = { matte: [0.02, 0.0], "high-gloss": [0.32, 0.1], metallic: [0.26, 0.16] }[cfg.finish] || [0.02, 0];
     out.push('<linearGradient id="' + id + 'sheen" x1="0" y1="0" x2="' + (cfg.finish === "metallic" ? "1" : "0") + '" y2="1">' +
       '<stop offset="0" stop-color="#fff" stop-opacity="' + sheen[0] + '"/>' +
       '<stop offset="0.45" stop-color="#fff" stop-opacity="' + sheen[1] + '"/>' +
@@ -197,7 +214,9 @@
 
     var panelFill = isWood ? "url(#" + id + "wood)" : base;
 
-    function panelBlock(x, y, w, h, courses) {
+    function panelBlock(x, y, w, h, courses, gap) {
+      gap = +gap || 0;
+      if (gap > 0) return gappedBlock(x, y, w, h, courses, gap);
       var s = [];
       s.push('<rect x="' + x.toFixed(2) + '" y="' + y.toFixed(2) + '" width="' + w.toFixed(2) + '" height="' + h.toFixed(2) + '" fill="' + panelFill + '"/>');
       if (!isWood && tex !== "smooth") s.push('<rect x="' + x.toFixed(2) + '" y="' + y.toFixed(2) + '" width="' + w.toFixed(2) + '" height="' + h.toFixed(2) + '" filter="url(#' + id + 'tex)" opacity=".5"/>');
@@ -213,6 +232,21 @@
         }
       }
       s.push('<rect x="' + x.toFixed(2) + '" y="' + y.toFixed(2) + '" width="' + w.toFixed(2) + '" height="' + h.toFixed(2) + '" fill="none" stroke="' + dark + '" stroke-width=".35"/>');
+      return s.join("");
+    }
+
+    // Panels separated by open gaps (separators): each course is its own board
+    function gappedBlock(x, y, w, h, courses, gap) {
+      var s = [];
+      var ch = (h - gap * (courses - 1)) / courses;
+      s.push('<rect x="' + x.toFixed(2) + '" y="' + y.toFixed(2) + '" width="' + w.toFixed(2) + '" height="' + h.toFixed(2) + '" fill="#f7f7f9"/>');
+      for (var k = 0; k < courses; k++) {
+        var cy = y + k * (ch + gap);
+        s.push('<rect x="' + x.toFixed(2) + '" y="' + cy.toFixed(2) + '" width="' + w.toFixed(2) + '" height="' + ch.toFixed(2) + '" fill="' + panelFill + '"/>');
+        if (!isWood && tex !== "smooth") s.push('<rect x="' + x.toFixed(2) + '" y="' + cy.toFixed(2) + '" width="' + w.toFixed(2) + '" height="' + ch.toFixed(2) + '" filter="url(#' + id + 'tex)" opacity=".5"/>');
+        s.push('<rect x="' + x.toFixed(2) + '" y="' + cy.toFixed(2) + '" width="' + w.toFixed(2) + '" height="' + ch.toFixed(2) + '" fill="url(#' + id + 'sheen)"/>');
+        s.push('<rect x="' + x.toFixed(2) + '" y="' + (cy + ch - Math.min(0.4, ch * 0.08)).toFixed(2) + '" width="' + w.toFixed(2) + '" height="' + Math.min(0.4, ch * 0.08).toFixed(2) + '" fill="' + dark + '" opacity=".6"/>');
+      }
       return s.join("");
     }
 
@@ -237,7 +271,7 @@
       var x0 = x + POST / 2, x1 = x + sp.w - POST / 2;
       spanGeom.push({ type: sp.type, x0: x0, x1: x1, cx: x, w: sp.w });
       if (sp.type === "bay") {
-        out.push(panelBlock(x0, panelTop, x1 - x0, panelBot - panelTop, cfg.courses));
+        out.push(panelBlock(x0, panelTop, x1 - x0, panelBot - panelTop, cfg.courses, cfg.gap));
       } else {
         // gate leaf
         var gap = 0.5, frame = 3.2;
@@ -320,6 +354,7 @@
   function describe(cfg) {
     cfg = Object.assign({}, DEFAULTS, cfg || {});
     var t = "Barrier Buddy elevation: " + cfg.height + " ft high, " + cfg.bays + " section" + (cfg.bays === 1 ? "" : "s") + " at " + cfg.spacing + " ft post centres, " + cfg.courses + " courses, " + colourName(cfg);
+    if (+cfg.gap > 0) t += ", " + cfg.gap + " inch panel separators";
     if (cfg.gate !== "none") t += ", with a " + cfg.gateWidth + " ft " + (cfg.gate === "frosted" ? "frosted glass" : "aluminum infill") + " gate";
     return t;
   }
@@ -339,6 +374,8 @@
     TEXTURES: TEXTURES,
     FINISHES: FINISHES,
     COURSE_OPTIONS: COURSE_OPTIONS,
+    SEPARATORS: SEPARATORS,
+    limitsFor: limitsFor,
     DEFAULTS: DEFAULTS,
     ftIn: ftIn
   };

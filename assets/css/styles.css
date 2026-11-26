@@ -339,6 +339,9 @@ p { margin: 0 0 1em; }
 .why__circle--red { background: var(--red); position: relative; z-index: 3; }
 .why__circle--ink { background: var(--ink); position: relative; z-index: 2; }
 .why__circle--grey { background: var(--grey); position: relative; z-index: 1; }
+.why__circle--outline { background: var(--white); color: var(--red); box-shadow: inset 0 0 0 4px var(--red); position: relative; z-index: 0; font-size: clamp(1.25rem, 1.9vw, 1.7rem); line-height: 1.05; }
+.why__circles .why__circle { width: clamp(170px, 17vw, 215px); }
+.hero__badge span small { display: block; font-size: .62rem; font-style: normal; font-weight: 800; letter-spacing: .02em; margin-top: 4px; color: var(--red); }
 .why__points { list-style: none; margin: 28px 0 0; padding: 0; display: grid; gap: 18px; }
 .why__points li { display: grid; grid-template-columns: 14px 1fr; gap: 16px; }
 .why__points li::before { content: ""; width: 14px; height: 14px; border-radius: 50%; background: var(--red); margin-top: 7px; }
@@ -348,7 +351,7 @@ p { margin: 0 0 1em; }
 @media (max-width: 860px) {
   .why { grid-template-columns: 1fr; }
   .why__circles { flex-direction: row; justify-content: center; }
-  .why__circle { width: 34vw; max-width: 170px; font-size: 1.15rem; }
+  .why__circles .why__circle { width: 26vw; max-width: 150px; font-size: 1rem; }
   .why__circle + .why__circle { margin-top: 0; margin-left: -18px; }
 }
 
@@ -465,6 +468,8 @@ p { margin: 0 0 1em; }
 .footer-col h4 { color: #fff; font-size: 1rem; margin-bottom: 14px; letter-spacing: 0; }
 .footer-col ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .footer-col address { font-style: normal; line-height: 1.55; margin-bottom: 14px; }
+.site-footer .footer-email { color: #fff; font-weight: 700; font-size: 1.05rem; border-bottom: 2px solid var(--red); }
+.form__submit p a, .form-success a:not(.btn), .form-status a { color: var(--red); font-weight: 700; }
 .footer-col address strong { color: #fff; display: block; font-size: .85rem; text-transform: uppercase; letter-spacing: .1em; margin-bottom: 2px; }
 .footer-bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; padding: 22px 0 28px; font-size: .85rem; color: rgba(255,255,255,.55); }
 @media (max-width: 980px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
@@ -606,7 +611,7 @@ p { margin: 0 0 1em; }
 .cfg__stage { position: sticky; top: calc(var(--header-h) + 16px); }
 .cfg__preview { background: #e9e9ec; border-radius: var(--radius); overflow: hidden; min-height: 260px; display: grid; place-items: center; padding: 10px; }
 .cfg__preview svg { width: 100%; height: auto; max-height: 60vh; }
-.cfg__readout { display: grid; grid-template-columns: repeat(5, 1fr); background: var(--ink); color: #fff; border-radius: var(--radius); margin-top: 12px; overflow: hidden; }
+.cfg__readout { display: grid; grid-template-columns: repeat(6, 1fr); background: var(--ink); color: #fff; border-radius: var(--radius); margin-top: 12px; overflow: hidden; }
 .cfg__readout div { padding: 14px 12px; border-left: 1px solid rgba(255,255,255,.12); }
 .cfg__readout div:first-child { border-left: 0; }
 .cfg__readout span { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.6); font-weight: 700; }
@@ -618,6 +623,8 @@ p { margin: 0 0 1em; }
 .cfg-step legend + * { clear: both; }
 .cfg-step__n { width: 32px; height: 32px; border-radius: 50%; background: var(--red); color: #fff; display: grid; place-items: center; font-size: .95rem; flex: none; }
 .cfg-help { color: var(--muted); font-size: .95rem; margin: 0 0 14px; }
+.cfg-gap-help { margin: 10px 0 0; font-size: .88rem; }
+#privacy-out { font-family: var(--font-display); font-weight: 800; color: var(--red); }
 .cfg-note { background: var(--red-tint); color: var(--red-dark); border-radius: 8px; padding: 10px 12px; font-size: .88rem; font-weight: 700; margin: 12px 0 0; }
 .cfg-label { font-weight: 700; font-size: .95rem; }
 
@@ -680,7 +687,9 @@ input[type="range"]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px 
 .cfg-summary .btn--primary { white-space: normal; }
 
 @media (max-width: 980px) {
-  .cfg { grid-template-columns: 1fr; }
+  .cfg { grid-template-columns: minmax(0, 1fr); }
+  .cfg__readout { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .cfg__readout span { font-size: .6rem; letter-spacing: .04em; }
   .cfg__stage { top: var(--header-h); z-index: 20; background: var(--paper); padding-top: 8px; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); padding-bottom: 8px; }
   .cfg__preview { min-height: 0; }
   .cfg__preview svg { max-height: 30vh; }
@@ -698,4 +707,25 @@ input[type="range"]:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 4px 
 
 /* Anchor targets clear the sticky header (and the products sub-nav) */
 [id] { scroll-margin-top: calc(var(--header-h) + 16px); }
-#fence, #gate, #courses, #finishes, #hardware, #specs { scroll-margin-top: calc(var(--header-h) + 64px); }
+#fence, #gate, #photos, #courses, #finishes, #hardware, #specs { scroll-margin-top: calc(var(--header-h) + 64px); }
+
+/* Product photos (products page) */
+.product-photos { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+.product-photo { margin: 0; background: var(--paper); border-radius: var(--radius); overflow: hidden; }
+.product-photo:first-child { grid-column: 1 / -1; }
+.product-photo img { width: 100%; height: auto; }
+.product-photo figcaption { padding: 14px 18px 18px; }
+.product-photo strong { display: block; font-family: var(--font-display); font-size: 1.1rem; }
+.product-photo span { color: var(--muted); font-size: .92rem; }
+@media (max-width: 640px) { .product-photos { grid-template-columns: 1fr; } }
+
+/* Why page */
+.why-num { display: block; font-family: var(--font-display); font-weight: 900; font-size: 3rem; letter-spacing: -0.04em; line-height: 1; margin-bottom: 10px; }
+.why-num--red { color: var(--red); }
+.why-num--ink { color: var(--ink); }
+.why-num--grey { color: var(--grey); }
+.why-checks { list-style: none; padding: 0; margin: 0 0 22px; display: grid; gap: 10px; }
+.why-checks li { display: flex; gap: 10px; align-items: center; font-weight: 700; }
+.why-checks svg { width: 22px; height: 22px; flex: none; }
+.why-visual { background: #e9e9ec; border-radius: var(--radius); overflow: hidden; }
+#private, #aesthetic, #durable, #pricing { scroll-margin-top: calc(var(--header-h) + 64px); }

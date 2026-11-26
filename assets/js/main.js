@@ -3,15 +3,17 @@
    ========================================================================== */
 
 /*
- * QUOTE FORM DELIVERY — set this before launch.
- * Any endpoint that accepts a POST of form data and returns 2xx works,
- * e.g. Formspree ("https://formspree.io/f/xxxxxxx"), Basin, Getform,
- * Netlify Forms, or your own CRM webhook.
- * While it is empty the forms run in DEMO MODE: visitors see the thank-you
- * message but nothing is sent anywhere.
+ * QUOTE FORM DELIVERY
+ * Quote requests are emailed to info@barrierbuddy.ca through FormSubmit
+ * (https://formsubmit.co). The very first submission triggers a one-time
+ * activation email to that inbox: click "Activate Form" in it, and every
+ * request after that is delivered. To use another service (Formspree, a CRM
+ * webhook…) replace quoteEndpoint with its URL.
+ * Leave quoteEndpoint empty to run the forms in demo mode (nothing is sent).
  */
 window.BB_CONFIG = window.BB_CONFIG || {
-  quoteEndpoint: ""
+  email: "info@barrierbuddy.ca",
+  quoteEndpoint: "https://formsubmit.co/ajax/info@barrierbuddy.ca"
 };
 
 (function () {
@@ -115,8 +117,11 @@ window.BB_CONFIG = window.BB_CONFIG || {
       var btn = form.querySelector('button[type="submit"]');
       var status = form.querySelector(".form-status");
       var endpoint = (window.BB_CONFIG && window.BB_CONFIG.quoteEndpoint) || "";
+      if (form.querySelector('input[name="_honey"]') && form.querySelector('input[name="_honey"]').value) return; // spam bot
       var data = new FormData(form);
       data.append("page", window.location.pathname);
+      var who = (data.get("name") || "").toString().trim();
+      data.set("_subject", "New Barrier Buddy quote request" + (who ? " — " + who : ""));
 
       if (btn) { btn.disabled = true; btn.dataset.label = btn.innerHTML; btn.textContent = "Sending…"; }
 
@@ -128,7 +133,7 @@ window.BB_CONFIG = window.BB_CONFIG || {
       };
       var fail = function () {
         if (btn) { btn.disabled = false; btn.innerHTML = btn.dataset.label; }
-        if (status) status.textContent = "Sorry, something went wrong sending your request. Please try again or visit our showroom.";
+        if (status) status.innerHTML = 'Sorry, something went wrong sending your request. Please try again, or email us at <a href="mailto:info@barrierbuddy.ca">info@barrierbuddy.ca</a>.';
       };
 
       if (!endpoint) {

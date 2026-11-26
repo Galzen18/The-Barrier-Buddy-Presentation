@@ -8,12 +8,12 @@
 
   var GALLERY = [
     // ---- Photos ----
-    { type: "photo", src: "assets/img/living-room-view.jpg", w: 1076, h: 717, cats: ["projects"], tag: "Inspiration",
-      title: "Backyard privacy", text: "A dark horizontal privacy fence frames the pool and garden of a modern home." },
+    { type: "photo", src: "assets/img/project-poolside.jpg", w: 1121, h: 1403, cats: ["projects", "gates"], tag: "Featured",
+      title: "Poolside privacy", text: "Matte black Barrier Buddy panels and a frosted glass gate enclose a backyard pool." },
+    { type: "photo", src: "assets/img/project-modern-backyard.jpg", w: 1121, h: 1403, cats: ["projects"], tag: "Featured",
+      title: "Modern backyard", text: "A continuous matte black privacy wall wraps the garden of a contemporary concrete home." },
     { type: "photo", src: "assets/img/standard-configuration.jpg", w: 1338, h: 753, cats: ["gates", "projects"], tag: "Product",
       title: "Standard configuration", text: "6 ft × 6 ft Barrier Buddy in matte black with a 6 ft × 4 ft frosted glass gate." },
-    { type: "photo", src: "assets/img/courtyard.jpg", w: 1180, h: 854, cats: ["projects"], tag: "Inspiration",
-      title: "Courtyard retreat", text: "Full-height horizontal privacy walls turn a city courtyard into a private outdoor room." },
     { type: "photo", src: "assets/img/finish-samples.jpg", w: 1065, h: 533, cats: ["finishes"], tag: "Finishes",
       title: "Powder-coat finish samples", text: "Solid colours, textures and woodgrain on aluminum from our in-house coating line." },
     { type: "photo", src: "assets/img/slats.jpg", w: 1600, h: 900, cats: ["details"], tag: "Detail",
@@ -29,10 +29,10 @@
       cfg: { bays: 3, courses: 21, colourType: "wood", colour: "walnut" } },
     { type: "render", cats: ["concepts", "gates"], tag: "Concept", title: "Deep navy with centre gate",
       text: "5-course profile in deep navy with a matching aluminum-infill gate.",
-      cfg: { bays: 2, courses: 5, colour: "deep-navy", gate: "aluminum", gateWidth: 4, gatePosition: "center", finish: "satin" } },
+      cfg: { bays: 2, courses: 5, colour: "deep-navy", gate: "aluminum", gateWidth: 4, gatePosition: "center" } },
     { type: "render", cats: ["concepts", "gates"], tag: "Concept", title: "Ivory & frosted glass",
-      text: "Soft-matte ivory panels with a 4 ft frosted glass gate.",
-      cfg: { bays: 2, courses: 21, colour: "ivory", finish: "soft-matte", gate: "frosted", gateWidth: 4, gatePosition: "right", postColour: "matte-black" } },
+      text: "Matte ivory panels with matte black posts and a 4 ft frosted glass gate.",
+      cfg: { bays: 2, courses: 21, colour: "ivory", finish: "matte", gate: "frosted", gateWidth: 4, gatePosition: "right", postColour: "matte-black" } },
     { type: "render", cats: ["concepts", "finishes"], tag: "Concept", title: "Charcoal fine sand",
       text: "4-course charcoal with a fine sand texture.",
       cfg: { bays: 3, courses: 4, colour: "charcoal", texture: "fine-sand" } },
@@ -44,7 +44,22 @@
       cfg: { bays: 3, height: 7, courses: 6, colour: "forest-green" } },
     { type: "render", cats: ["concepts", "finishes"], tag: "Concept", title: "Bronze metallic",
       text: "3-course profile with a metallic bronze finish.",
-      cfg: { bays: 3, courses: 3, colour: "bronze", finish: "metallic" } }
+      cfg: { bays: 3, courses: 3, colour: "bronze", finish: "metallic" } },
+    { type: "render", cats: ["concepts"], tag: "Concept", title: "8 ft privacy with separators",
+      text: "Matte black at 8 ft high, with 0.5″ separators between panels so wind passes through (≈90% privacy).",
+      cfg: { bays: 3, height: 8, spacing: 8, courses: 21, colour: "matte-black", gap: 0.5 } },
+    { type: "render", cats: ["concepts"], tag: "Concept", title: "Long-span 16 ft bays",
+      text: "Charcoal panels spanning 16 ft between posts at 7 ft high, made possible by 0.75″ separators.",
+      cfg: { bays: 2, height: 7, spacing: 16, courses: 21, colour: "charcoal", gap: 0.75 } },
+    { type: "render", cats: ["concepts", "finishes"], tag: "Concept", title: "White oak & black posts",
+      text: "White oak woodgrain on aluminum framed by matte black posts.",
+      cfg: { bays: 3, courses: 21, colourType: "wood", colour: "white-oak", postColour: "matte-black" } },
+    { type: "render", cats: ["concepts", "gates"], tag: "Concept", title: "Hammered charcoal, centre gate",
+      text: "Hammered-texture charcoal with a frosted glass gate in the middle of the run.",
+      cfg: { bays: 2, courses: 6, colour: "charcoal", texture: "hammered", gate: "frosted", gateWidth: 4, gatePosition: "center" } },
+    { type: "render", cats: ["concepts", "finishes"], tag: "Concept", title: "Ebony woodgrain, 1″ separators",
+      text: "8 ft ebony woodgrain with 1″ open spacing between boards and 10 ft post spacing.",
+      cfg: { bays: 3, height: 8, spacing: 10, courses: 6, colourType: "wood", colour: "ebony", gap: 1 } }
   ];
 
   var grid = document.getElementById("gallery");
